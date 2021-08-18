@@ -31,11 +31,25 @@ commands:
             #  Add revert code here. You can find this in the Getting Started section.
               exit 1
             fi
-            
+
+parameters:
+  circleci_image:
+    type: string
+    default: circleci/node:13.8.0
+  amazon_image:
+    type: string
+    default: amazon/aws-cli
+  ansible_image:
+    type: string
+    default: ansible/ansible:ubuntu1604
+  alpine_image:
+    type: string
+    default: python:3.7-alpine3.11
+
 jobs:
   build-frontend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: << pipeline.parameters.circleci_image >>
     steps:
       - checkout
       - restore_cache:
@@ -56,7 +70,7 @@ jobs:
 
   build-backend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: << pipeline.parameters.circleci_image >>
     steps:
       - checkout
       - restore_cache:
@@ -74,43 +88,44 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
+
   test-frontend:
     docker:
-      # Docker image here
+      - image: << pipeline.parameters.circleci_image >>
     steps:
-      # Checkout code from git
+      - checkout
       # Restore from cache
       # Your job code here
                 
   test-backend:
     docker:
-      # Docker image here
+      - image: << pipeline.parameters.circleci_image >>
     steps:
-      # Checkout code from git
+      - checkout
       # Restore from cache
       # Your job code here
             
   scan-frontend:
     docker:
-      # Docker image here
+      - image: << pipeline.parameters.circleci_image >>
     steps:
-      # Checkout code from git
+      - checkout
       # Restore from cache
       # Your job code here
 
   scan-backend:
     docker:
-      # Docker image here
+      - image: << pipeline.parameters.circleci_image >>
     steps:
-      # Checkout code from git
+      - checkout
       # Restore from cache
       # Your job code here
 
   deploy-infrastructure:
     docker:
-      # Docker image here that supports AWS CLI
+      - image: << pipeline.parameters.amazon_image >>
     steps:
-      # Checkout code from git
+      - checkout
       - run:
           name: Ensure back-end infrastructure exists
           command: |
@@ -142,11 +157,12 @@ jobs:
 
   configure-infrastructure:
     docker:
-      # Docker image here that supports Ansible
+      - image: ansible/ansible:ubuntu1604
     steps:
-      # Checkout code from git
+      - checkout
       # Add ssh keys with fingerprint
-      # attach workspace
+      - attach_workspace:
+          at: ~/
       - run:
           name: Install dependencies
           command: |
@@ -161,9 +177,9 @@ jobs:
 
   run-migrations:
     docker:
-      # Docker image here that supports NodeJS
+      - image: << pipeline.parameters.circleci_image >>
     steps:
-      # Checkout code from git
+      - checkout
       - run:
           name: Run migrations
           command: |
@@ -178,9 +194,9 @@ jobs:
 
   deploy-frontend:
     docker:
-      # Docker image here that supports AWS CLI
+      - image: << pipeline.parameters.amazon_image >>
     steps:
-      # Checkout code from git
+      - checkout
       - run:
           name: Install dependencies
           command: |
@@ -199,11 +215,12 @@ jobs:
                     
   deploy-backend:
     docker:
-      # Docker image here that supports Ansible
+      - image: << pipeline.parameters.alpine_image >> # Docker image here that supports Ansible
     steps:
-      # Checkout code from git
+      - checkout
       # Add ssh keys with fingerprint
-      # attach workspace
+      - attach_workspace:
+          at: ~/
       - run:
           name: Install dependencies
           command: |
@@ -216,9 +233,9 @@ jobs:
 
   smoke-test:
     docker:
-      # Lightweight Docker image 
+      - image: << pipeline.parameters.alpine_image >> # Lightweight Docker image 
     steps:
-      # Checkout code from git
+      - checkout
       - run:
           name: Install dependencies
           command: |
@@ -239,9 +256,9 @@ jobs:
 
   cloudfront-update:
     docker:
-      # Docker image here that supports AWS CLI
+      - image: << pipeline.parameters.amazon_image >> # Docker image here that supports AWS CLI
     steps:
-      # Checkout code from git
+      - checkout
       - run:
           name: Install dependencies
           command: |
@@ -254,9 +271,9 @@ jobs:
 
 cleanup:
     docker:
-      # Docker image here
+      - image: << pipeline.parameters.circleci_image >> # Docker image here
     steps:
-      # Checkout code from git
+      - checkout
       - run:
           name: Get old stack workflow id
           command: |
