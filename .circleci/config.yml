@@ -46,6 +46,9 @@ parameters:
     type: string
     default: python:3.7-alpine3.11
 
+orbs:
+  slack: circleci/slack@3.4.2  # for slack integration to https://udapeople.slack.com; reference: https://circleci.com/blog/continuous-integration-slack-twilio/
+
 jobs:
   build-frontend:
     docker:
@@ -67,6 +70,7 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
+      - slack/status
 
   build-backend:
     docker:
@@ -88,38 +92,77 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
+      - slack/status
 
   test-frontend:
     docker:
       - image: << pipeline.parameters.circleci_image >>
     steps:
       - checkout
-      # Restore from cache
+      - restore_cache:  # Restore from cache
+          key: frontend-build
       # Your job code here
-                
+      - run: 
+          name: Install dependencies
+          command: |
+            cd frontend
+            npm i
+      - run: 
+          name: Test frontend
+          command: |
+            cd frontend
+            npm run test 
+      - slack/status
+
   test-backend:
     docker:
       - image: << pipeline.parameters.circleci_image >>
     steps:
       - checkout
-      # Restore from cache
+      - restore_cache:  # Restore from cache
+          key: backend-build
       # Your job code here
-            
+      - run: 
+          name: Install dependencies
+          command: |
+            cd backend
+            npm i
+      - run: 
+          name: Test Backend
+          command: |
+            cd backend
+            npm run test
+      - slack/status
+
   scan-frontend:
     docker:
       - image: << pipeline.parameters.circleci_image >>
     steps:
       - checkout
-      # Restore from cache
+      - restore_cache:  # Restore from cache
+          key: frontend-build
       # Your job code here
+      - run: 
+          name: Scan frontend
+          command: |
+            cd frontend
+            npm audit
+      - slack/status
 
   scan-backend:
     docker:
       - image: << pipeline.parameters.circleci_image >>
     steps:
       - checkout
-      # Restore from cache
+      - restore_cache:  # Restore from cache
+          key: backend-build
       # Your job code here
+      - run: 
+          name: Scan Backend
+          command: |
+            cd backend
+            npm audit
+      - slack/status
 
   deploy-infrastructure:
     docker:
@@ -294,14 +337,14 @@ workflows:
     jobs:
       - build-frontend
       - build-backend
-      #- test-frontend:
-      #    requires: [build-frontend]
-      #- test-backend:
-      #    requires: [build-backend]
-      #- scan-backend:
-      #    requires: [build-backend]
-      #- scan-frontend:
-      #    requires: [build-frontend]
+      - test-frontend:
+          requires: [build-frontend]
+      - test-backend:
+          requires: [build-backend]
+      - scan-backend:
+          requires: [build-backend]
+      - scan-frontend:
+          requires: [build-frontend]
       #- deploy-infrastructure:
       #    requires: [test-frontend, test-backend, scan-frontend, scan-backend]
       #    filters:
