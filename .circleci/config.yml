@@ -55,8 +55,6 @@ jobs:
       - image: << pipeline.parameters.circleci_image >>
     steps:
       - checkout
-      - restore_cache:
-          keys: [frontend-build]
       - run:
           name: Install frontend dependencies
           command: |
@@ -77,8 +75,6 @@ jobs:
       - image: << pipeline.parameters.circleci_image >>
     steps:
       - checkout
-      - restore_cache:
-          keys: [backend-build]
       - run:
           name: Install backend dependencies
           command: |
@@ -92,7 +88,7 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
-          
+
   test-frontend:
     docker:
       - image: << pipeline.parameters.circleci_image >>
