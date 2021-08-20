@@ -47,7 +47,7 @@ parameters:
     default: python:3.7-alpine3.11
 
 orbs:
-  slack: circleci/slack@4.4.3  # for slack integration to https://udapeople.slack.com; reference: https://circleci.com/blog/continuous-integration-slack-twilio/
+  slack: circleci/slack@4.4.3
 
 jobs:
   build-frontend:
@@ -127,9 +127,7 @@ jobs:
           command: |
             cd backend
             npm run test
-      - slack/status:
-          fail_only: true
-          mentions: "adeyemi.alatishe"  
+       
 
   scan-frontend:
     docker:
