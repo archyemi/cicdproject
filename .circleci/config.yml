@@ -70,7 +70,7 @@ jobs:
           key: frontend-build
       - slack/notify:
           event: pass
-          template: basic_fail_1
+          template: basic_success_1
       
   build-backend:
     docker:
