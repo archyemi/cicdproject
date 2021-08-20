@@ -50,7 +50,7 @@ orbs:
   slack: circleci/slack@4.4.3
 
 jobs:
-  lint-frontend:
+  build-frontend:
     docker:
       - image: << pipeline.parameters.circleci_image >>
     steps:
