@@ -50,7 +50,7 @@ orbs:
   slack: circleci/slack@4.4.3
 
 jobs:
-  build-frontend:
+  lint-frontend:
     docker:
       - image: << pipeline.parameters.circleci_image >>
     steps:
@@ -64,7 +64,7 @@ jobs:
           name: Build frontend
           command: |
             cd frontend
-            npm run build
+            npm run lint
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
