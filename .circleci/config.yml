@@ -69,7 +69,6 @@ jobs:
           paths: [frontend/node_modules]
           key: frontend-build
       
-
   build-backend:
     docker:
       - image: << pipeline.parameters.circleci_image >>
@@ -137,6 +136,11 @@ jobs:
       - restore_cache:  # Restore from cache
           key: frontend-build
       # Your job code here
+      - run:
+          name: Install frontend dependencies
+          command: |
+            cd frontend
+            npm install
       - run: 
           name: Scan frontend
           command: |
