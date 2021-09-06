@@ -108,8 +108,7 @@ jobs:
           name: Test frontend
           command: |
             cd frontend
-            npm run test 
-      
+            npm run test  
 
   test-backend:
     docker:
@@ -150,7 +149,6 @@ jobs:
             cd frontend
             npm audit fix --audit-level=critical --force
     
-
   scan-backend:
     docker:
       - image: << pipeline.parameters.circleci_image >>
@@ -165,7 +163,6 @@ jobs:
             cd backend
             npm audit fix --audit-level=critical --force
       
-
   deploy-infrastructure:
     docker:
       - image: << pipeline.parameters.amazon_image >>
