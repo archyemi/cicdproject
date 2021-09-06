@@ -168,11 +168,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install backend dependencies
-          command: |
-            cd backend
-            npm i
-      - run:
           name: Ensure back-end infrastructure exists
           command: |
             aws cloudformation deploy \
