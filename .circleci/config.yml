@@ -164,7 +164,7 @@ jobs:
       
   deploy-infrastructure:
     docker: 
-    - image: << pipeline.parameters.circleci_image >>
+    - image: << pipeline.parameters.amazon_image >>
     steps:
       - checkout
       - run:
