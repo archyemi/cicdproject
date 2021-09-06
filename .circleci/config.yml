@@ -165,7 +165,8 @@ jobs:
       
   deploy-infrastructure:
     docker:
-      - image: << pipeline.parameters.amazon_image >>
+    # Docker image here that supports AWS CLI
+    #  - image: << pipeline.parameters.amazon_image >>
     steps:
       - checkout
       - run:
