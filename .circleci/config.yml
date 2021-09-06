@@ -186,12 +186,14 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
-            yum install -y tar
             cd .circleci/ansible/
             rm ./inventory.txt
             PUBLIC_DNS=$(aws ec2 describe-instances --region ${AWS_DEFAULT_REGION} --filters 'Name=tag:project,Values=udapeople-backend' --query "Reservations[*].Instances[0].PublicDnsName" --output text)
+            echo "[web]" >> ./inventory.txt
             echo ${PUBLIC_DNS} >> ./inventory.txt
             cat ./inventory.txt
+            yum install -y tar
+            yum install -y gzip
             curl -H "Content-Type: text/plain" \
                -H "token: ${CIRCLE_WORKFLOW_ID}" \
                --request PUT \
