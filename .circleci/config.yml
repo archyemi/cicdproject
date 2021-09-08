@@ -238,7 +238,8 @@ jobs:
           command: |
             cd backend
             sudo su
-            npm run migrations > output.txt
+            rm ./output.txt
+            npm run migrations
       - run:
           name: Send migration results to memstash
           command: |
