@@ -17,7 +17,7 @@ commands:
     description: Revert the last migration if successfully run in the current workflow.
     parameters:
       # Add parameter here     
-    steps:
+    steps: 
       - run:
           name: Revert migrations
           # Add when this will run
@@ -26,11 +26,12 @@ commands:
             SUCCESS = 1
             if(( $SUCCESS==1 )); 
             then
-            #  cd ~/project/backend
-            #  npm install
-            #  Add revert code here. You can find this in the Getting Started section.
-              exit 1
+              cd ~/project/backend
+              npm install
+            # Add revert code here. You can find this in the Getting Started section.
+              npm run migrations:revert
             fi
+          when: on_fail
 
 parameters:
   circleci_image:
@@ -185,17 +186,16 @@ jobs:
           command: |
             cd .circleci/ansible/
             rm ./inventory.txt
-            PUBLIC_DNS=$(aws ec2 describe-instances --region ${AWS_DEFAULT_REGION} --filters 'Name=tag:project,Values=udapeople-backend' --query "Reservations[*].Instances[0].PublicDnsName" --output text)
+            BACKEND_DNS=$(aws ec2 describe-instances --region ${AWS_DEFAULT_REGION} --filters 'Name=tag:project,Values=udapeople-backend' --query "Reservations[*].Instances[0].PublicDnsName" --output text)
             echo "[web]" >> ./inventory.txt
-            echo ${PUBLIC_DNS} >> ./inventory.txt
+            echo ${BACKEND_DNS} >> ./inventory.txt
             cat ./inventory.txt
-            yum install -y tar
-            yum install -y gzip
+            yum install -y tar gzip
             curl -H "Content-Type: text/plain" \
                -H "token: ${CIRCLE_WORKFLOW_ID}" \
                --request PUT \
-               --data ${PUBLIC_DNS} \
-               https://api.memstash.io/values/public_dnsnventory
+               --data ${BACKEND_DNS} \
+               https://api.memstash.io/values/backend_dns
       - persist_to_workspace:
           root: ~/
           paths:
@@ -229,15 +229,32 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Install dependencies
+          command: |
+            cd backend
+            npm install
+      - run:
           name: Run migrations
           command: |
-            # Your code here
-            exit 1
+            cd backend
+            npm run migrations > output.txt
       - run:
           name: Send migration results to memstash
           command: |
             # Your code here
-            exit 1
+            if [ -s output.txt ]
+            then
+              cat output.txt
+              if grep "has been executed successfully" output.txt
+              then
+                success="1"
+              fi
+            fi
+            curl -H "Content-Type: text/plain" \
+               -H "token: ${CIRCLE_WORKFLOW_ID}" \
+               --request PUT \
+               --data ${success} \
+               https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
      # Here's where you will add some code to rollback on failure      
 
   deploy-frontend:
@@ -249,16 +266,22 @@ jobs:
           name: Install dependencies
           command: |
             # your code here
+            apk add --no-cache curl
+            apk add --no-cache --upgrade bash
+            apk add --no-cache --update npm    
       - run:
           name: Get backend url
           command: |
             # your code here
+            BACKEND_IP=$(curl -H "token: ${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/backend_dns)
+            echo ${BACKEND_IP}
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
       - run:
           name: Deploy frontend objects
           command: |
             # your code here
+            aws s3 cp ./frontend/dist s3://udapeople-s3bucket-${CIRCLE_WORKFLOW_ID}/ --recursive
       # Here's where you will add some code to rollback on failure      
                     
   deploy-backend:
@@ -272,7 +295,8 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            # your code here
+            cd backend
+            npm install
       - run:
           name: Deploy backend
           command: |
@@ -288,14 +312,28 @@ jobs:
           name: Install dependencies
           command: |
             # your code here
+            apk add --no-cache curl
+            apk add --no-cache --upgrade bash
+            apk add --no-cache --update ansible
+            apk add --no-cache openssh-client
+            pip3 install awscli
       - run:
           name: Get backend url
           command: |
             # your code here
+            PUBLIC_DNS=$(curl -H "token: ${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/backend_dns)
+            echo ${PUBLIC_DNS}
+            
       - run:
           name: Backend smoke test.
           command: |
             # your code here
+            if curl -s "http://${PUBLIC_DNS}:3030/api/status" | grep "ok"
+            then
+              return 0
+            else
+              return 1
+            fi
       - run:
           name: Frontend smoke test.
           command: |
@@ -357,8 +395,8 @@ workflows:
               only: [main]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
-      #- run-migrations:
-      #    requires: [configure-infrastructure]
+      - run-migrations:
+          requires: [configure-infrastructure]
       #- deploy-frontend:
       #    requires: [run-migrations]
       #- deploy-backend:
