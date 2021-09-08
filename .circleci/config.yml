@@ -238,8 +238,12 @@ jobs:
           command: |
             cd backend
             sudo su
-            rm ./output.txt
-            npm run migrations
+            if [ -f output.txt ]
+            then
+              rm ./output.txt
+            fi
+            npm run migrations > output.txt
+            no_output_timeout: 20m
       - run:
           name: Send migration results to memstash
           command: |
