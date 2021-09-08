@@ -250,7 +250,6 @@ jobs:
             # Your code here
             if [ -s output.txt ]
             then
-              cat output.txt
               if grep "has been executed successfully" output.txt
               then
                 success="1"
