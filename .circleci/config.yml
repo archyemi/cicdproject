@@ -235,37 +235,21 @@ jobs:
       - image: << pipeline.parameters.circleci_image >>
     steps:
       - checkout
-      - restore_cache:
-          keys: [backend-build]
       - run:
           name: Install dependencies
           command: |
             cd backend
-            sudo su
-            echo NODE_ENV=production > ".env"
-            cat .env
             npm install
       - run:
           name: Run migrations
           command: |
             cd backend
-            echo ENVIROMENT=$ENVIROMENT > ".env"
-            echo TYPEORM_CONNECTION=$TYPEORM_CONNECTION >> ".env"
-            echo TYPEORM_MIGRATIONS_DIR=$TYPEORM_MIGRATIONS_DIR >> ".env"
-            echo TYPEORM_ENTITIES=$TYPEORM_ENTITIES >> ".env"
-            echo TYPEORM_MIGRATIONS=$TYPEORM_MIGRATIONS >> ".env"
-            echo TYPEORM_HOST=$TYPEORM_HOST >> ".env"
-            echo TYPEORM_PORT=$TYPEORM_PORT >> ".env"
-            echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> ".env"
-            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> ".env"
-            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> ".env"
             if [ -f output.txt ]
             then
               rm ./output.txt
             fi
-            npm install
-            npm install typescript
-            npm run migrations > output.txt
+            npm i
+            sudo npm run migrations > output.txt
       - revert-migrations:
             workflow_id: ${CIRCLE_WORKFLOW_ID}
       - run:
