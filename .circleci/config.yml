@@ -245,7 +245,6 @@ jobs:
             echo NODE_ENV=production > ".env"
             cat .env
             npm install
-            npm install aws-cli
       - run:
           name: Run migrations
           command: |
@@ -283,8 +282,8 @@ jobs:
                https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
               fi
             fi
-      - destroy-environment:
-          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      #- destroy-environment:
+      #    workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
      # Here's where you will add some code to rollback on failure      
 
   deploy-frontend:
