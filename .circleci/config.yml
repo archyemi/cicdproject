@@ -241,6 +241,7 @@ jobs:
           name: Install dependencies
           command: |
             cd backend
+            sudo su
             echo NODE_ENV=production > ".env"
             cat .env
             npm install
