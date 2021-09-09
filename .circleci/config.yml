@@ -28,7 +28,7 @@ commands:
           # Add when this will run
           command: |
             SUCCESS=$(curl -H "Content-Type: text/plain" -H "token: << parameters.workflow_id >>" --request GET https://api.memstash.io/values/migration_<< parameters.workflow_id >>)
-            if(( $SUCCESS==1 )); 
+            if(( ${SUCCESS}==1 )); 
             then
             cd ~/cicdproject/backend
             npm install
