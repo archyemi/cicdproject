@@ -236,11 +236,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install dependencies
-          command: |
-            cd backend
-            npm install
-      - run:
           name: Run migrations
           command: |
             cd backend
