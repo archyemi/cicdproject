@@ -249,6 +249,7 @@ jobs:
             #sudo npm run migrations > output.txt
 
             cd ./backend 
+            sudo npm i
             touch .env
             echo ENVIROMENT=$ENVIROMENT >> ./.env
             echo TYPEORM_CONNECTION=$TYPEORM_CONNECTION >> ./.env
@@ -261,7 +262,7 @@ jobs:
             echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> ./.env
             echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> ./.env
             touch output.txt
-            npm run migrations >> output.txt
+            sudo npm run migrations >> output.txt
       - revert-migrations:
             workflow_id: ${CIRCLE_WORKFLOW_ID}
       - run:
