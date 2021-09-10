@@ -243,7 +243,7 @@ jobs:
           name: Run migrations
           command: |
             cd backend
-            npm run migrations > output.txt
+            sudo npm run migrations > output.txt
       - revert-migrations:
             workflow_id: ${CIRCLE_WORKFLOW_ID}
       - run:
