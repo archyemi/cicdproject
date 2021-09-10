@@ -244,7 +244,6 @@ jobs:
           command: |
             cd backend
             npm i
-            npm run build
             npm audit fix --audit-level=critical --force
             npm run migrations > output.txt
       - revert-migrations:
