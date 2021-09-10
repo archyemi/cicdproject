@@ -240,6 +240,9 @@ jobs:
           name: Install dependencies
           command: |
             npm install aws-cli
+            cd backend
+            npm i
+            npm audit fix --force
       - run:
           name: Run migrations
           command: |
@@ -249,11 +252,9 @@ jobs:
             #sudo npm run migrations > output.txt
 
             cd backend 
-            npm i
-            npm audit fix --force
             npm run build
             touch output.txt
-            sudo npm run migrations >> output.txt
+            npm run migrations >> output.txt
       - revert-migrations:
             workflow_id: ${CIRCLE_WORKFLOW_ID}
       - run:
