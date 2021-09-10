@@ -240,13 +240,13 @@ jobs:
           name: Install dependencies
           command: |
             npm install aws-cli
-            cd backend
-            npm i
-            npm audit fix --force
+            cd backend 
       - run:
           name: Run migrations
           command: |
             cd backend 
+            npm i
+            npm audit fix --force
             touch output.txt
             npm run migrations >> output.txt
       - revert-migrations:
