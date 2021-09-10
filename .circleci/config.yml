@@ -234,15 +234,18 @@ jobs:
       - image: << pipeline.parameters.circleci_image >>
     steps:
       - checkout
+      - restore_cache:
+          keys: [backend-build]
       - run:
           name: Install dependencies
           command: |
-            cd backend
-            npm i
+            npm install aws-cli
       - run:
           name: Run migrations
           command: |
             cd backend
+            npm i
+            npm install typescript
             sudo npm run migrations > output.txt
       - revert-migrations:
             workflow_id: ${CIRCLE_WORKFLOW_ID}
