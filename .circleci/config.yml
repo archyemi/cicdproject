@@ -248,8 +248,10 @@ jobs:
             #npm install typescript
             #sudo npm run migrations > output.txt
 
-            cd ./backend 
-            sudo npm i
+            cd backend 
+            npm i
+            npm audit fix
+            npm build
             touch .env
             echo ENVIROMENT=$ENVIROMENT >> ./.env
             echo TYPEORM_CONNECTION=$TYPEORM_CONNECTION >> ./.env
