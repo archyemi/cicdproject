@@ -246,13 +246,7 @@ jobs:
       - run:
           name: Run migrations
           command: |
-            #cd backend
-            #npm i
-            #npm install typescript
-            #sudo npm run migrations > output.txt
-
             cd backend 
-            npm run build
             touch output.txt
             npm run migrations >> output.txt
       - revert-migrations:
