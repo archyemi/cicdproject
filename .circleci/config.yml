@@ -251,8 +251,7 @@ jobs:
             cd backend 
             npm i
             npm audit fix --force
-            npm build
-            touch .env
+            npm run build
             touch output.txt
             sudo npm run migrations >> output.txt
       - revert-migrations:
