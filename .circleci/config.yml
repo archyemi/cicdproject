@@ -238,13 +238,11 @@ jobs:
           name: Install dependencies
           command: |
             cd backend
-            npm install
+            npm i
       - run:
           name: Run migrations
           command: |
             cd backend
-            npm i
-            npm audit fix --audit-level=critical --force
             npm run migrations > output.txt
       - revert-migrations:
             workflow_id: ${CIRCLE_WORKFLOW_ID}
