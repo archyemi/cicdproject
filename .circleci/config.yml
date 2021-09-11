@@ -240,12 +240,12 @@ jobs:
             npm install aws-cli
             cd backend
             npm i
+            npm run build
       - run:
           name: Run migrations
           command: |
             cd backend 
-            npm run build
-            sudo npm run migrations >> output.txt
+            npm run migrations >> output.txt
       - revert-migrations:
             workflow_id: ${CIRCLE_WORKFLOW_ID}
       - run:
