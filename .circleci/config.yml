@@ -240,7 +240,6 @@ jobs:
             npm install aws-cli
             cd backend
             npm i
-            npm audit fix --force 
       - run:
           name: Run migrations
           command: |
