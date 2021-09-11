@@ -237,15 +237,25 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            npm install aws-cli
             cd backend
-            npm i
-            npm run build
+            npm install
       - run:
           name: Run migrations
           command: |
-            #cd backend 
-            # sudo npm run migrations >> output.txt
+            cd backend 
+            touch .env
+            echo ENVIROMENT=$ENVIROMENT >> ./.env
+            echo TYPEORM_CONNECTION=$TYPEORM_CONNECTION >> ./.env
+            echo TYPEORM_MIGRATIONS_DIR=$TYPEORM_MIGRATIONS_DIR >> ./.env
+            echo TYPEORM_ENTITIES=$TYPEORM_ENTITIES >> ./.env
+            echo TYPEORM_MIGRATIONS=$TYPEORM_MIGRATIONS >> ./.env
+            echo TYPEORM_HOST=$TYPEORM_HOST >> ./.env
+            echo TYPEORM_PORT=$TYPEORM_PORT >> ./.env
+            echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> ./.env
+            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> ./.env
+            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> ./.env
+            touch output.txt
+            npm run migrations >> output.txt
       - revert-migrations:
             workflow_id: ${CIRCLE_WORKFLOW_ID}
       - run:
@@ -275,9 +285,11 @@ jobs:
           name: Install dependencies
           command: |
             # your code here
-            apk add --no-cache curl
-            apk add --no-cache --upgrade bash
-            apk add --no-cache --update npm    
+            yum -y install tar gzip 
+            curl -sL https://rpm.nodesource.com/setup_lts.x | bash -
+            yum -y install nodejs
+            cd frontend 
+            npm install   
       - run:
           name: Get backend url
           command: |
@@ -316,7 +328,7 @@ jobs:
           name: Install dependencies
           command: |
             cd backend
-            npm install
+            npm i
             pip install awscli
             apk add --update ansible
       - run:
