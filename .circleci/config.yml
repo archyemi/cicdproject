@@ -242,7 +242,9 @@ jobs:
       - run:
           name: Run migrations
           command: |
-            cd backend 
+            cd backend
+            npm i
+            npm run build 
             touch .env
             echo ENVIROMENT=$ENVIROMENT >> ./.env
             echo TYPEORM_CONNECTION=$TYPEORM_CONNECTION >> ./.env
