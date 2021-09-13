@@ -236,11 +236,11 @@ jobs:
       - image: << pipeline.parameters.circleci_image >>
     steps:
       - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            cd backend
-            npm install
+     # - run:
+     #     name: Install dependencies
+     #     command: |
+     #       cd backend
+     #       npm install
       - run:
           name: Run migrations
           command: |
