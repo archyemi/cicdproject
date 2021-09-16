@@ -236,23 +236,20 @@ jobs:
       - image: << pipeline.parameters.circleci_image >>
     steps:
       - checkout
-     # - run:
-     #     name: Install dependencies
-     #     command: |
-     #       cd backend
-     #       npm install
+      - aws-cli/setup
+      - run:
+          name: Install dependencies
+          command: |
+            sudo apt-get -y update
       - run:
           name: Run migrations
           command: |
             cd backend
             npm i
-            npm run build 
+            npm run build
+            npm run migrations:revert 
             touch output.txt
             npm run migrations >> output.txt
-      - revert-migrations:
-            workflow_id: ${CIRCLE_WORKFLOW_ID}
-      - destroy-environment:
-          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - run:
           name: Send migration results to memstash
           command: |
@@ -267,10 +264,12 @@ jobs:
                https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
               fi
             fi
-      #- destroy-environment:
-      #    workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
      # Here's where you will add some code to rollback on failure      
-
+      - revert-migrations:
+            workflow_id: ${CIRCLE_WORKFLOW_ID}
+      - destroy-environment:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+          
   deploy-frontend:
     docker:
     - image: << pipeline.parameters.amazon_image >>
