@@ -12,6 +12,7 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
+            aws s3 rm s3://udapeople-<< parameters.workflow_id >> --recursive
             aws s3 rb s3://udapeople-<< parameters.workflow_id >> --force
             aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.workflow_id >>
             aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.workflow_id >>
@@ -198,7 +199,7 @@ jobs:
             cat ./inventory.txt
             yum install -y tar gzip
             curl -H "Content-Type: text/plain" \
-               -H "token: ${CIRCLE_WORKFLOW_ID}" \
+               -H "token: ${CIRCLE_WORKFLOW_ID:0:7}" \
                --request PUT \
                --data ${BACKEND_DNS} \
                https://api.memstash.io/values/backend_dns
@@ -362,7 +363,7 @@ jobs:
               return 1
             else
               echo "Unsuccessful Smoke-test"
-              return 0
+              return 1
             fi
       - run:
           name: Backend smoke test.
@@ -377,7 +378,7 @@ jobs:
       
       # Here's where you will add some code to rollback on failure  
       - revert-migrations:
-          workflow_id: ${CIRCLE_WORKFLOW_ID
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
