@@ -260,8 +260,8 @@ jobs:
               if grep "has been executed successfully" output.txt
               then
                 success="1"
-                curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID}" --request PUT --data ${success} \
-               https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
+                curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID:0:7}" --request PUT --data ${success} \
+               https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
               fi
             fi
      # Here's where you will add some code to rollback on failure.      
@@ -321,10 +321,12 @@ jobs:
           command: |
             pip install awscli
             apk add --update ansible
+            apk add --update zip
       - run:
           name: Deploy backend
           command: |
             # your code here
+            zip -r backend.zip backend
             cd .circleci/ansible/
             ansible-playbook -i ./inventory.txt deploy-backend.yml
       # Here's where you will add some code to rollback on failure  

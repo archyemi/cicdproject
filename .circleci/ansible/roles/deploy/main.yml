@@ -26,20 +26,22 @@
 
 - name: "Copy Backend Files"
   become: true
-  synchronize:
-    src: ../../backend/dist
-    dest: /home/ubuntu/backend
-    recursive: true
+  copy:
+    src: /tmp/backend.zip
+    dest: /home/ubuntu
+    remote_src: yes
 
-- name: "copy node_modules"
-  become: yes
-  synchronize:
-    src: ../../backend/node_modules
-    dest: /home/ubuntu/backend
-    recursive: true
-    
+- name: Unzip backend files
+  shell: |
+    unzip /home/ubuntu/backend.zip
+
+- name: Install and Build
+  shell: |
+    cd /home/ubuntu/backend
+    npm install
+    npm run build
+  
 - name: "start server"
-  become: true
-  command: pm2 start -f main.js
-  args:
-    chdir: /home/ubuntu/backend/dist
+  shell: |
+    cd /home/ubuntu/backend
+    pm2 start npm --name backend -- start
