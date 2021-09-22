@@ -29,6 +29,7 @@
   copy:
     src: /cicdproject/backend
     dest: /home/ubuntu
+    remote_src: yes
 
 
 - name: Install and Build
