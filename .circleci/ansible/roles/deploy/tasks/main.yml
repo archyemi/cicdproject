@@ -27,7 +27,7 @@
 - name: "Copy Backend Files"
   become: true
   copy:
-    src: backend.zip
+    src: /root/cicdproject/backend.zip
     dest: /home/ubuntu
     remote_src: yes
 
