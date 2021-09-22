@@ -327,6 +327,7 @@ jobs:
           name: Deploy backend
           command: |
             # your code here
+            mkdir .circleci/ansible/roles/deploy/files
             zip -r backend.zip backend
             cp backend.zip .circleci/ansible/roles/deploy/files
             cd .circleci/ansible/

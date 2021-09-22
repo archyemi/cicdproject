@@ -25,12 +25,16 @@
     state: present
 
 - name: "Copy Backend Files"
-  become: true
   copy:
-    src: /cicdproject/backend
+    src: backend.zip
     dest: /home/ubuntu
     remote_src: yes
 
+- name: "unzip folder."
+  unarchive:
+    src: /home/ubuntu/backend.zip
+    dest: /home/ubuntu
+    remote_src: yes
 
 - name: Install and Build
   shell: |
