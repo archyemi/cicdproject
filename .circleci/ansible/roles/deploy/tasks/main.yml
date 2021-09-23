@@ -28,7 +28,7 @@
   copy:
     src: /files/backend.zip
     dest: /home/ubuntu
-    remote_src: yes
+    
 
 - name: "unzip folder."
   unarchive:
