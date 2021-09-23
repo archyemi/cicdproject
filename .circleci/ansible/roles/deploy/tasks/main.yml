@@ -26,7 +26,7 @@
 
 - name: "Copy Backend Files"
   copy:
-    src: backend.zip
+    src: /files/backend.zip
     dest: /home/ubuntu
     remote_src: yes
 
