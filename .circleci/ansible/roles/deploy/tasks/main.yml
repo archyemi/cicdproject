@@ -25,8 +25,9 @@
     state: present
 
 - name: "Copy Backend Files"
+  become: true
   copy:
-    src: /files/backend.zip
+    src: /root/cicdproject/backend.zip
     dest: /home/ubuntu
     
 
