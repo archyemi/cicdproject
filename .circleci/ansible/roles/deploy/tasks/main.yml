@@ -36,8 +36,8 @@
 - name: Install and Build
   shell: |
     cd /home/ubuntu/backend
-    npm install
-    npm run build
+    sudo npm install
+    sudo npm run build
   
 - name: "start server"
   shell: |
