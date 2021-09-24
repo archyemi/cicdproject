@@ -27,7 +27,7 @@
 - name: "Copy Backend Files"
   become: true
   copy:
-    src: /root/cicdproject/.circleci/ansible/roles/deploy/files/backend.zip
+    src: /~/cicdproject/.circleci/ansible/roles/deploy/files/backend.zip
     dest: /home/ubuntu
     remote_src: yes
     
