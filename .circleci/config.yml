@@ -330,6 +330,9 @@ jobs:
             mkdir .circleci/ansible/roles/deploy/files
             zip -r backend.zip backend
             cd .circleci/ansible/
+            export ANSIBLE_HOST_KEY_CHECKING=False 
+            export host_key_checking=False
+            export record_host_keys=False
             ansible-playbook -i ./inventory.txt deploy-backend.yml
       # Here's where you will add some code to rollback on failure ## 
       - destroy-environment:

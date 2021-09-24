@@ -24,20 +24,26 @@
     production: yes
     state: present
 
-- name: "Copy Backend Files"
-  become: true
-  copy:
-    src: /~/cicdproject/backend.zip
-    dest: /home/ubuntu
-    remote_src: no
-    
+#- name: "Copy Backend Files"
+#  become: true
+#  copy:
+##    src: /~/cicdproject/backend.zip
+#    dest: /home/ubuntu
+#    remote_src: no
 
-- name: "unzip folder."
+- name: "copy backend binaries"
   become: true
-  unarchive:
-    src: /home/ubuntu/backend.zip
-    dest: /home/ubuntu
-    remote_src: yes
+  synchronize:
+    src: /root/project/backend
+    dest: /home/ubuntu/
+    recursive: true   
+
+#- name: "unzip folder."
+##  become: true
+#  unarchive:
+#    src: /home/ubuntu/backend.zip
+#    dest: /home/ubuntu
+#    remote_src: yes
 
 - name: Install and Build
   shell: |
