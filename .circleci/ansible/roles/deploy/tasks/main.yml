@@ -34,12 +34,14 @@
 #    remote_src: yes
 
 - name: Install and Build
+  become: true
   shell: |
     cd /home/ubuntu/backend
     sudo npm install
     sudo npm run build
   
 - name: "start server"
+  become: true
   shell: |
     cd /home/ubuntu/backend
     pm2 start npm --name backend -- start
