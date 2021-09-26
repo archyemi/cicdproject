@@ -20,7 +20,6 @@
 #    remote_src: no
 
 - name: "copy backend binaries"
-  become: true
   synchronize:
     src: /root/project/backend
     dest: /home/ubuntu/
@@ -34,14 +33,13 @@
 #    remote_src: yes
 
 - name: Install and Build
-  become: true
   shell: |
     cd /home/ubuntu/backend
-    sudo npm install
-    sudo npm run build
+    ls
+    npm install
+    npm run build
   
 - name: "start server"
-  become: true
   shell: |
     cd /home/ubuntu/backend
     pm2 start npm --name backend -- start
