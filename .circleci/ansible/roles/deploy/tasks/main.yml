@@ -20,22 +20,23 @@
 #    remote_src: no
 
 - name: "copy backend binaries"
-  synchronize:
-    src: /root/project/backend
+  copy:
+    src: /root/project/backend.zip
     dest: /home/ubuntu/
-    recursive: true   
+    
 
-#- name: "unzip folder."
-##  become: true
-#  unarchive:
-#    src: /home/ubuntu/backend.zip
-#    dest: /home/ubuntu
-#    remote_src: yes
+- name: "unzip folder."
+  unarchive:
+    src: /home/ubuntu/backend.zip
+    dest: /home/ubuntu
+    remote_src: yes
 
 - name: Install and Build
   shell: |
     cd /home/ubuntu/backend
     ls
+    npm install -g npm@latest
+    npm install -g webpack-dev-server
     npm install
     npm run build
   

@@ -328,6 +328,7 @@ jobs:
           command: |
             # your code here
             zip -r backend.zip backend
+            ls
             cd .circleci/ansible/
             export ANSIBLE_HOST_KEY_CHECKING=False 
             export host_key_checking=False
