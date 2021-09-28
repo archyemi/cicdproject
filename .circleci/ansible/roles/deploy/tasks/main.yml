@@ -30,21 +30,26 @@
 - name: "copy backend files"
   become: true
   copy:
-    src: /root/project/backend.zip
-    dest: /tmp
-
-- name: "unzip folder."
-  become: true
-  unarchive:
-    src: /tmp/backend.zip
+    src: /root/project/backend
     dest: /home/ubuntu
-    remote_src: yes
 
-- name: Install, Build and Start
+#- name: "unzip folder."
+#  become: true
+#  unarchive:
+#    src: /tmp/backend.zip
+#    dest: /home/ubuntu
+#    remote_src: yes
+
+- name: Install, Build
   shell: |
     pm2 delete all
     cd /home/ubuntu/backend
     sudo npm install -g n
     sudo npm install
     sudo npm run build
+
+- name: Start
+  shell: |
+    pm2 delete all
+    cd /home/ubuntu/backend
     sudo pm2 start npm --name backend -- start
