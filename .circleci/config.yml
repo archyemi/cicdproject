@@ -321,7 +321,7 @@ jobs:
           name: Install dependencies
           command: |
             pip install awscli
-            apk add --update ansible
+            apk add --update ansible tar gzip
             apk add --update zip rsync openssh
             apk add --update curl nodejs npm
       - run:
