@@ -12,25 +12,6 @@
     production: yes
     state: present
 
-- name: "copy backend files"
-  become: true
-  synchronize:
-    src: /root/project/backend.zip
-    dest: /home/ubuntu/
-
-- name: "unzip folder."
-  become: true
-  unarchive:
-    src: /home/ubuntu/backend.zip
-    dest: /home/ubuntu
-    remote_src: yes
-
-#- name: "unzip folder."
-#  become: true
-#  shell: |
-#    unzip /home/ubuntu/backend.zip
-    
-
 - name: Disable IPv6 with sysctl
   become: true
   sysctl: name={{ item }} value=1 state=present reload=yes
@@ -38,6 +19,19 @@
     - net.ipv6.conf.all.disable_ipv6
     - net.ipv6.conf.default.disable_ipv6
     - net.ipv6.conf.lo.disable_ipv6
+
+- name: "copy backend files"
+  become: true
+  copy:
+    src: /root/project/backend
+    dest: /home/ubuntu/
+
+#- name: "unzip folder."
+#  become: true
+#  unarchive:
+#    src: /home/ubuntu/backend.zip
+#    dest: /home/ubuntu
+#    remote_src: yes
 
 - name: Install, Build and Start
   become: true
