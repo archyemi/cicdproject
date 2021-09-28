@@ -42,8 +42,8 @@
 
 - name: Install, Build
   shell: |
-    pm2 delete all
     cd /home/ubuntu/backend
+    npm install -g n
     sudo npm install -g n
     sudo npm install
     sudo npm run build
