@@ -328,7 +328,7 @@ jobs:
           name: Deploy backend
           command: |
             # your code here
-            #zip -r backend.zip backend
+            zip -r backend.zip backend
             ls
             cd .circleci/ansible/
             export ANSIBLE_HOST_KEY_CHECKING=False 
