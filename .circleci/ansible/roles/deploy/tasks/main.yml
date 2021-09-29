@@ -46,6 +46,7 @@
     npm install -g n
     sudo npm install -g n
     sudo npm install
+    sudo npm i webpack-dev-server -g
     sudo npm run build
 
 #- name: Start
