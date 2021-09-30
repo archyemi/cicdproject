@@ -30,15 +30,8 @@
 - name: "copy backend files"
   become: true
   copy:
-    src: /root/project/backend.zip
-    dest: /tmp
-
-- name: "unzip folder."
-  become: true
-  unarchive:
-    src: /tmp/backend.zip
+    src: /root/project/backend
     dest: /home/ubuntu
-    remote_src: yes
 
 - name: Install, Build
   shell: |
@@ -49,11 +42,9 @@
     sudo npm i webpack-dev-server -g
     sudo npm run build
 
-#- name: Start
-#  shell: |
-#    pm2 delete all
-#    cd /home/ubuntu/backend
-#    sudo pm2 start npm --name backend -- start
+- name: Delete any running app
+  shell: |
+    pm2 delete all
 
 - name: "start server"
   become: true
