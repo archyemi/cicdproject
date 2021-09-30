@@ -31,7 +31,7 @@
   become: true
   copy:
     src: /root/project/backend.zip
-    dest: /home/ubuntu
+    dest: /tmp
 
 - name: "unzip folder."
   become: true
