@@ -461,7 +461,7 @@ jobs:
           name: Get old stack workflow id
           command: |
             # your code here
-            export OldWorkflowID=$(curl -H "token: << pipeline.parameters.memstash_token >>" \
+            export OldWorkflowID=$(curl -H "token: ${CIRCLE_WORKFLOW_ID:0:7}" \
                   --request GET https://api.memstash.io/values/udapeople_oldworkflow)
 
             export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
