@@ -324,11 +324,9 @@ jobs:
       - run:
           name: Configure
           command: |
-            tar -czvf dist.tar.gz /root/project/backend/dist
+            tar -czvf backend.tar.gz /root/project/backend
             mkdir -p ~/project/.circleci/ansible/roles/deploy/files/
-            mv dist.tar.gz ~/project/.circleci/ansible/roles/deploy/files/
-            tar -czvf node_modules.tar.gz /root/project/backend/node_modules
-            mv node_modules.tar.gz ~/project/.circleci/ansible/roles/deploy/files/
+            mv backend.tar.gz ~/project/.circleci/ansible/roles/deploy/files/
             pwd
             cd /root/project/.circleci/ansible/
             export ANSIBLE_HOST_KEY_CHECKING=False 

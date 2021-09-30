@@ -43,30 +43,22 @@
 #    sudo npm run build
 
 - name: Creates directory for Node Modules
+  become: true
   file:
-    path: ~/node_modules
-    state: directory
-
-- name: Creates directory for dist
-  file:
-    path: ~/dist
+    path: ~/backend
     state: directory
 
 - name: Unarchive Backend
+  become: true
   unarchive:
-    src: dist.tar.gz
-    dest: /home/ubuntu/dist/
-
-- name: Copy and unarchive node_modules
-  unarchive:
-    src: node_modules.tar.gz
-    dest: /home/ubuntu/node_modules/
+    src: backend.tar.gz
+    dest: /home/ubuntu/backend/
 
 - name: "start server"
   become: true
   command: pm2 start -f ./main.js -- run start
   args:
-    chdir: /home/ubuntu/dist/
+    chdir: /home/ubuntu/backend/dist/
   
 - name: "List processes"
   shell: |      
