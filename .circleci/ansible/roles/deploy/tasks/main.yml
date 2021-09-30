@@ -6,11 +6,6 @@
     state: latest
     update_cache: yes
 
-- name: "upgrade packages."
-  become: true
-  apt:
-    upgrade: "yes"
-
 - name: "install pm2"
   become: true
   npm:
@@ -43,19 +38,16 @@
 #    sudo npm run build
 
 - name: Creates directory for Node Modules
-  become: true
   file:
     path: ~/backend
     state: directory
 
 - name: Unarchive Backend
-  become: true
   unarchive:
     src: backend.tar.gz
     dest: /home/ubuntu/backend/
 
 - name: "start server"
-  become: true
   command: pm2 start -f ./main.js -- run start
   args:
     chdir: /home/ubuntu/backend/dist/
