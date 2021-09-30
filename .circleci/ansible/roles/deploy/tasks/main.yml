@@ -30,15 +30,15 @@
 - name: "copy backend files"
   become: true
   copy:
-    src: /root/project/backend
+    src: /root/project/backend.zip
     dest: /home/ubuntu
 
-#- name: "unzip folder."
-#  become: true
-#  unarchive:
-#    src: /tmp/backend.zip
-#    dest: /home/ubuntu
-#    remote_src: yes
+- name: "unzip folder."
+  become: true
+  unarchive:
+    src: /tmp/backend.zip
+    dest: /home/ubuntu
+    remote_src: yes
 
 - name: Install, Build
   shell: |

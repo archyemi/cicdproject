@@ -248,16 +248,6 @@ jobs:
           name: Run migrations
           command: |
             cd backend
-            echo ENVIROMENT=$ENVIROMENT > ".env"
-            echo TYPEORM_CONNECTION=$TYPEORM_CONNECTION >> ".env"
-            echo TYPEORM_MIGRATIONS_DIR=$TYPEORM_MIGRATIONS_DIR >> ".env"
-            echo TYPEORM_ENTITIES=$TYPEORM_ENTITIES >> ".env"
-            echo TYPEORM_MIGRATIONS=$TYPEORM_MIGRATIONS >> ".env"
-            echo TYPEORM_HOST=$TYPEORM_HOST >> ".env"
-            echo TYPEORM_PORT=$TYPEORM_PORT >> ".env"
-            echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> ".env"
-            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> ".env"
-            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> ".env"
             npm i
             npm run migrations:revert
             npm run migrations > output.txt
@@ -296,13 +286,12 @@ jobs:
           command: |
             pip install awscli
             apk add --update ansible tar gzip
-            apk add --update zip rsync openssh
+            apk add --update zip unzip rsync openssh
             apk add --update curl nodejs npm
       - run:
           name: Deploy backend
           command: |
-            # your code here
-            #zip -r backend.zip backend
+            zip -r backend.zip backend
             echo ENVIRONMENT=production > "backend/dist/.env"
             echo TYPEORM_CONNECTION=postgres >> "backend/dist/.env"
             echo TYPEORM_ENTITIES=./src/modules/domain/**/*.entity{.ts,.js} >> "backend/dist/.env"
