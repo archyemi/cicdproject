@@ -42,12 +42,12 @@
 #    sudo npm i webpack-dev-server -g
 #    sudo npm run build
 
-- name: Creates directory n
+- name: Creates directory for Node Modules
   file:
     path: ~/node_modules
     state: directory
 
-- name: Creates directory d
+- name: Creates directory for dist
   file:
     path: ~/dist
     state: directory
