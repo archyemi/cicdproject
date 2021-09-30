@@ -37,7 +37,7 @@
 #    sudo npm i webpack-dev-server -g
 #    sudo npm run build
 
-- name: Creates directory for Node Modules
+- name: Creates directory
   file:
     path: ~/backend
     state: directory
@@ -50,7 +50,7 @@
 - name: "start server"
   command: pm2 start -f ./main.js -- run start
   args:
-    chdir: /home/ubuntu/backend/dist/
+    chdir: /home/ubuntu/backend/backend/dist/
   
 - name: "List processes"
   shell: |      
