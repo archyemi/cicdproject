@@ -42,10 +42,6 @@
     sudo npm i webpack-dev-server -g
     sudo npm run build
 
-- name: Delete any running app
-  shell: |
-    pm2 delete all
-
 - name: "start server"
   become: true
   command: pm2 start -f ./main.js

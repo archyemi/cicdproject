@@ -291,7 +291,7 @@ jobs:
       - run:
           name: Deploy backend
           command: |
-            zip -r backend.zip backend
+           # zip -r backend.zip backend
             echo ENVIRONMENT=production > "backend/.env"
             echo TYPEORM_CONNECTION=postgres >> "backend/.env"
             echo TYPEORM_ENTITIES=./src/modules/domain/**/*.entity{.ts,.js} >> "backend/.env"
