@@ -166,6 +166,7 @@ jobs:
   deploy-infrastructure:
     docker:
     # Docker image here that supports AWS CLI
+      - image: << pipeline.parameters.circleci_image >>
     steps:
       - checkout
       - run:
