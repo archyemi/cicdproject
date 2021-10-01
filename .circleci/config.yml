@@ -460,7 +460,6 @@ jobs:
       - run:
           name: Get old stack workflow id
           command: |
-            # your code here
             export OldWorkflowID=$(curl -H "token: ${CIRCLE_WORKFLOW_ID:0:7}" \
                   --request GET https://api.memstash.io/values/udapeople_oldworkflow)
             echo "${OldWorkflowID}"
@@ -474,8 +473,6 @@ jobs:
             then
               aws s3 rm s3://udapeople-"${OldWorkflowID}" --recursive
               aws s3 rb s3://udapeople-"${OldWorkflowID}" --force
-              aws cloudformation delete-stack --stack-name udacity-backend-${OldWorkflowID}
-              aws cloudformation delete-stack --stack-name udacity-frontend-${OldWorkflowID}
             fi
             
 workflows:
