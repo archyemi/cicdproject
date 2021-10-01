@@ -249,6 +249,7 @@ jobs:
           command: |
             cd backend
             npm i
+            npm run build
             npm run migrations:revert
             npm run migrations > output.txt
             cat output.txt
@@ -291,12 +292,11 @@ jobs:
       - run:
           name: Deploy backend
           command: |
-           # zip -r backend.zip backend
             cd backend
+            npm audit fix --audit-level=critical --force
             npm install
             npm run build
             echo build successful
-            npm audit fix --audit-level=critical --force
             echo ENVIRONMENT=production > "/root/project/backend/dist/.env"
             echo TYPEORM_CONNECTION=postgres >> "/root/project/backend/dist/.env"
             echo TYPEORM_ENTITIES=./src/modules/domain/**/*.entity{.ts,.js} >> "/root/project/backend/dist/.env"
