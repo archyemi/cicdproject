@@ -473,6 +473,7 @@ jobs:
             then
               aws s3 rm s3://udapeople-"${OldWorkflowID}" --recursive
               aws s3 rb s3://udapeople-"${OldWorkflowID}" --force
+              aws cloudformation delete-stack --stack-name udapeople-"${OldWorkflowID}"
             fi
             
 workflows:
