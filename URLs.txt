@@ -2,13 +2,13 @@
 https://github.com/archyemi/cicdproject
 
 **[URL02]**
-http://udapeople-41177bf.s3-website-us-east-1.amazonaws.com
+http://udapeople-306c107.s3-website-us-east-1.amazonaws.com
 
 **[URL03]**
 https://d1i6g9gflljt8k.cloudfront.net
 
 **[URL04]**
-http://3.87.209.30:3030/api/status
+http://ec2-54-162-5-111.compute-1.amazonaws.com:3030/api/status
 
 **[URL05]**
 http://35.168.33.193:9090
